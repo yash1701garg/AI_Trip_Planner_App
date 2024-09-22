@@ -10,7 +10,7 @@ const CreateTrip = () => {
         <div className='mt-20'>
          <div>
           <h2 className='text-xl my-3 font-medium'>What is destination of choice?</h2>
-          <GooglePlacesAutocomplete
+          <GooglePlacesAutocomplete 
         apiKey={import.meta.env.VITE_GOOGLE_PLACE_API_KEY} // Using the API key from .env
       />
          </div>
