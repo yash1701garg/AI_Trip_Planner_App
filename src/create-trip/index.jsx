@@ -25,8 +25,10 @@ const locationSuggestions = [
 
 const CreateTrip = () => {
   const [place, setPlace] = useState('');
+  
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const[openDailog,setOpenDailog] =useState(false);
   const [formData, setFormData] = useState({});
 
   // Handle form data updates
@@ -65,6 +67,11 @@ const CreateTrip = () => {
 
   // Validation and trip generation logic
   const OnGenerateTrip = async () => {
+   
+     const user =  localStorage.getItem('user');  
+    if(!user){
+      return ;
+    }
     if (
       formData?.noOfDays > 5 ||
       !formData?.location ||
