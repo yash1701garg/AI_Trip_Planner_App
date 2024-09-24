@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SelectedBudgetOption, SelectTravelList } from '@/constants/option';
+import { AI_PROMOTE, SelectedBudgetOption, SelectTravelList } from '@/constants/option';
+import { chatSession } from '@/service/AiModal';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -14,7 +15,12 @@ const locationSuggestions = [
   'Berlin',
   'Los Angeles',
   'Dubai',
-  'Toronto'
+  'Toronto',
+  'Jaipur',
+  'Delhi',
+  'Ladakh',
+  'Mussorie',
+  'Shimla'
 ];
 
 const CreateTrip = () => {
@@ -58,7 +64,7 @@ const CreateTrip = () => {
   };
 
   // Validation and trip generation logic
-  const OnGenerateTrip = () => {
+  const OnGenerateTrip = async () => {
     if (
       formData?.noOfDays > 5 ||
       !formData?.location ||
@@ -69,8 +75,18 @@ const CreateTrip = () => {
       toast('Please fill all details');
       return;
     }
-    console.log(formData);
-    toast('Trip Generated Successfully');
+    const FINAL_PROMPT = AI_PROMOTE
+    .replace('{location}',formData?.location)
+    .replace('{totalDays}',formData?.noOfDays)
+    .replace('{traveler}',formData?.traveler)
+    .replace('{budget}',formData?.budget)
+    .replace('{totalDays}',formData?.noOfDays)
+
+    console.log(FINAL_PROMPT);
+
+    const result = await chatSession.sendMessage(FINAL_PROMPT);
+    console.log(result.response.text());
+    
   };
 
   return (
