@@ -4,7 +4,14 @@ import { AI_PROMOTE, SelectedBudgetOption, SelectTravelList } from '@/constants/
 import { chatSession } from '@/service/AiModal';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+}from "@/components/ui/dialog";
 const locationSuggestions = [
   'New York',
   'London',
@@ -28,13 +35,14 @@ const CreateTrip = () => {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [formData, setFormData] = useState({});
+  const [loading, setLoading] = useState(false); // Loading state
 
   // Handle form data updates
   const handleInputChange = (name, value) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   useEffect(() => {
@@ -64,33 +72,50 @@ const CreateTrip = () => {
   };
 
   // Validation and trip generation logic
-  const OnGenerateTrip = async () => {
-    if (
-      formData?.noOfDays > 5 ||
-      !formData?.location ||
-      !formData?.budget ||
-      !formData?.traveler
-    ) {
-      console.log('Please enter trip details correctly');
-      toast('Please fill all details');
+  const onGenerateTrip = async () => {
+    const user = localStorage.getItem('user');  
+    if (!user) {
+      // toast('Please log in to generate a trip.');
+      setOpenDialog(true);
       return;
     }
+
+    if (
+      !formData?.location ||
+      !formData?.budget ||
+      !formData?.traveler ||
+      (formData?.noOfDays > 5)
+    ) {
+      toast('Please fill all details correctly. Maximum number of days is 5.');
+      return;
+    }
+
     const FINAL_PROMPT = AI_PROMOTE
-    .replace('{location}',formData?.location)
-    .replace('{totalDays}',formData?.noOfDays)
-    .replace('{traveler}',formData?.traveler)
-    .replace('{budget}',formData?.budget)
-    .replace('{totalDays}',formData?.noOfDays)
+      .replace('{location}', formData.location)
+      .replace('{totalDays}', formData.noOfDays)
+      .replace('{traveler}', formData.traveler)
+      .replace('{budget}', formData.budget);
 
-    console.log(FINAL_PROMPT);
-
-    const result = await chatSession.sendMessage(FINAL_PROMPT);
-    console.log(result.response.text());
-    
+    setLoading(true); // Start loading
+    try {
+      const result = await chatSession.sendMessage(FINAL_PROMPT);
+      console.log(result.response.text());
+      // Handle the response here, maybe display it to the user
+    } catch (error) {
+      console.error('Error generating trip:', error);
+      toast('Failed to generate trip. Please try again.');
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
-    <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
+    <div className="relative sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
+      {loading && (
+        <div className="absolute inset-0 bg-black opacity-70 flex justify-center items-center z-50">
+          <h2 className="text-white text-2xl">Loading...</h2>
+        </div>
+      )}
       <h2 className="font-bold text-3xl">Tell us your travel preferences</h2>
       <p className="mt-3 text-gray-500 text-xl">
         Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.
@@ -123,7 +148,7 @@ const CreateTrip = () => {
       <div>
         <h2 className="text-xl my-3 font-medium">How many days do you plan?</h2>
         <Input
-          placeholder="Ex 3 days"
+          placeholder="Ex: 3 days"
           type="number"
           onChange={(e) => handleInputChange('noOfDays', e.target.value)}
         />
@@ -169,8 +194,22 @@ const CreateTrip = () => {
 
       {/* Generate Trip Button */}
       <div className="my-10 justify-end flex">
-        <Button onClick={OnGenerateTrip}>Generate Trip</Button>
+        <Button onClick={onGenerateTrip}>Generate Trip</Button>
       </div>
+     
+      <Dialog open={openDailog}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogDescription>
+        <img src="/logo.svg"/>
+        <h2>Sign In With Google</h2>
+        <p>Sign in to the App with Google authentication securely</p>
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+
+
     </div>
   );
 };
