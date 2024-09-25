@@ -5,7 +5,7 @@
  */
 import { GoogleGenerativeAI } from "@google/generative-ai";
   
-  const apiKey = import.meta.env.VITE_GOOGLE_GEMINI_AI_API_KEY;
+  const apiKey = "AIzaSyDxjalzjw66_o_HWDiEtJ2iuWat97Ni2QY";
   // eslint-disable-next-line no-undef
   const genAI = new GoogleGenerativeAI(apiKey);
   

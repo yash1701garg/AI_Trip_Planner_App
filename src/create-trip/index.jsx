@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AI_PROMOTE, SelectedBudgetOption, SelectTravelList } from '@/constants/option';
 import { chatSession } from '@/service/AiModal';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const locationSuggestions = [
