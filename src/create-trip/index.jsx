@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/service/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 
 const locationSuggestions = [
@@ -45,7 +46,7 @@ const CreateTrip = () => {
   const [formData, setFormData] = useState({});
   const [openDailog, setOpenDailog] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   // Handle form data updates
   const handleInputChange = (name, value) => {
     setFormData({
@@ -115,23 +116,17 @@ const CreateTrip = () => {
   };
 
   const SaveAiTrip = async (TripData) => {
-    try {
-      setLoading(true);
-      const user = JSON.parse(localStorage.getItem("user"));
-      const docId = Date.now().toString();
-      await setDoc(doc(db, "AITrips", docId), {
-        userSelection: formData,
-        TripData: JSON.parse(TripData),
-        userEmail: user?.email,
-        id: docId,
-      });
-      toast.success("Trip saved successfully!");
-    } catch (error) {
-      console.error("Error saving trip:", error);
-      toast.error("Failed to save trip.");
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const docId = Date.now().toString();
+    await setDoc(doc(db, "AITrips", docId), {
+      userSelection: formData,
+      TripData: JSON.parse(TripData),
+      userEmail: user?.email,
+      id: docId,
+    });
+    setLoading(false);
+    navigate('/view-trip/'+docId);
   };
   
 

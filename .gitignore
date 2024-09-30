@@ -25,3 +25,6 @@ dist-ssr
 
 #secret
 .env
+
+#firebase config
+firebaseConfig.jsx
