@@ -6,7 +6,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
   
   const apiKey = "AIzaSyDxjalzjw66_o_HWDiEtJ2iuWat97Ni2QY";
-  // eslint-disable-next-line no-undef
+  //  eslint-disable-next-line no-undef
   const genAI = new GoogleGenerativeAI(apiKey);
   
   const model = genAI.getGenerativeModel({

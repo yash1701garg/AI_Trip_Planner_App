@@ -16,6 +16,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/service/firebaseConfig';
 
 
 const locationSuggestions = [
@@ -106,13 +108,32 @@ const CreateTrip = () => {
     .replace('{traveler}',formData?.traveler)
     .replace('{budget}',formData?.budget)
     .replace('{totalDays}',formData?.noOfDays)
-
-    console.log(FINAL_PROMPT);
-
     const result = await chatSession.sendMessage(FINAL_PROMPT);
-    console.log(result.response.text());
+    console.log(result?.response?.text());
+    SaveAiTrip(result?.response?.text());
     
   };
+
+  const SaveAiTrip = async (TripData) => {
+    try {
+      setLoading(true);
+      const user = JSON.parse(localStorage.getItem("user"));
+      const docId = Date.now().toString();
+      await setDoc(doc(db, "AITrips", docId), {
+        userSelection: formData,
+        TripData: JSON.parse(TripData),
+        userEmail: user?.email,
+        id: docId,
+      });
+      toast.success("Trip saved successfully!");
+    } catch (error) {
+      console.error("Error saving trip:", error);
+      toast.error("Failed to save trip.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   const GetUserProfile = (tokenInfo) => {
     axios
