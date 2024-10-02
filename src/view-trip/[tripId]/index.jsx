@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import InfoSection from '../components/InfoSection';
 import Hotels from '../components/Hotels';
-import PlacesToVisit from '../components/PlacesToVisit';
+import PlaceToVisit from '../components/PlaceToVisit';
 import Footer from '../components/Footer';
+
 
 function Viewtrip() {
 
   const {tripId} = useParams();
-  const [trip,setTrip] = useState();
+  const [trip,setTrip] = useState([]);
 
   useEffect(()=>{
     tripId && GetTripData();
@@ -35,9 +36,9 @@ function Viewtrip() {
   return (
     <div className='p-12 md:px-25 lg:px-44 xl:px:56'>
         <InfoSection trip={trip}/>
-        <Hotels trip={trip}/>
-        <PlacesToVisit trip={trip}/>
-        <Footer trip={trip}/>
+        <Hotels trip={trip}/> 
+        <PlaceToVisit trip={trip} />
+        <Footer/>
     </div>
   )
 }
