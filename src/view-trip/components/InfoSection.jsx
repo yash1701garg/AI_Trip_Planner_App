@@ -1,7 +1,24 @@
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import { GetPlaceDetails } from '@/service/GlobalApi';
+import React, { useEffect } from 'react'
 import { IoIosSend } from "react-icons/io";
 const InfoSection = ({trip}) => {  
+  useEffect(()=>{
+    trip&&GetPlacePhoto();
+  },[trip])
+
+  const GetPlacePhoto = async () => {
+    try {
+      const data = {
+        textQuery: trip?.userSelection?.location
+      };
+      const res = await GetPlaceDetails(data);
+      console.log(res.data.places[0].photos[3].name);
+    } catch (error) {
+      console.error("Error aya fetching me ", error);
+      // You can display an error message in the UI if needed
+    }
+  };
   return (
     <div>
       <img

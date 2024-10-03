@@ -16,7 +16,7 @@ const PlaceToVisit = ({ trip }) => {
                 to={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(day.location)},${encodeURIComponent(day.geoCoordinates)}`} 
                 target='_blank'
               >
-                <div className='mb-8 p-4 border border-gray-200 rounded-lg shadow-md '>
+                <div className='mb-8 p-4 border border-gray-200 rounded-lg shadow-md hover:scale-105 duration-100'>
                   <h2 className='font-medium text-lg text-blue-600'>{`Day ${dayKey.slice(-1)}`}</h2>
                   <h3 className='font-semibold text-xl mt-2'>{day.location}</h3>
                   <img 
