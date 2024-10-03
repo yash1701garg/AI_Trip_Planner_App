@@ -1,16 +1,20 @@
-import path from "path";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import path from 'path'; // Ensure you have this import
+import { defineConfig } from 'vite'; // Import defineConfig from 'vite'
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/AI_Trip_Planner_App/', // Ensure this matches your repo name
+  base: '/AI_Trip_Planner_App/',
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
-    outDir: 'build',
+    rollupOptions: {
+      // Remove the external configuration if it’s not needed
+      // Otherwise, ensure the path is correct and only includes external assets
+      external: ['/AI_Trip_Planner_App/assets/index-cAHmw311.js'],
+    },
   },
 });
