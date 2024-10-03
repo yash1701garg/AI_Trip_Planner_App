@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'; // Import defineConfig from 'vite'
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/AI_Trip_Planner_App/',
+  base: '/',
   plugins: [react()],
   resolve: {
     alias: {
