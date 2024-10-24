@@ -55,7 +55,7 @@ function Header() {
           alt="logo"
           className="h-10 w-10 rounded-xl"
         />
-        <span className="font-bold text-2xl hidden md:block">Travel Genie</span>
+        <span className="font-bold text-2xl hidden md:block">Travel Advisior</span>
         </a>
       </div>
       
