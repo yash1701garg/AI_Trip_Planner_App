@@ -62,7 +62,9 @@ const locationSuggestions = [
   'Chitkul',
   'Zanskar Valley',
   'Ranikhet',
-  'Dehradun'
+  'Dehradun',
+  'New Delhi',
+  'Vrindavan'
 ]
 
 const CreateTrip = () => {
